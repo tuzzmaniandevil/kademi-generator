@@ -1,0 +1,19 @@
+<controllers onAppEnabled="_onAppEnabled">
+    <!-- Common -->
+    <source>/APP-INF/common/config.js</source>
+    {{#if jsondb}}
+    <source>/APP-INF/common/esMappings.js</source>
+    {{/if}}
+    <source>/APP-INF/common/common.js</source>
+    {{#if xhrPolyfill}}
+    <source>/APP-INF/common/xmlHttpRequest.js</source>
+    {{/if}}
+
+    <!-- Admin -->
+    <source>/APP-INF/admin/mappings.js</source>
+
+    {{#if website}}
+    <!-- Website -->
+    <source>/APP-INF/website/mappings.js</source>
+    {{/if}}
+</controllers>

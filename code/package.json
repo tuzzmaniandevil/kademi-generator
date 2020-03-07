@@ -1,0 +1,14 @@
+{
+  "name": "generate-kademi",
+  "version": "1.0.0",
+  "description": "A collection of generators for Kademi",
+  "main": "index.js",
+  "author": "wesley@tuzza.co",
+  "license": "ISC",
+  "dependencies": {
+    "plop": "^2.6.0"
+  },
+  "bin": {
+    "generate-kademi": "./index.js"
+  }
+}

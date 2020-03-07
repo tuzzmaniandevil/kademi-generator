@@ -1,0 +1,58 @@
+(function (g) {
+    /**
+     * This method gets called whenever the app get's enabled.
+     * 
+     * @param {OrganisationRootFolder} orf
+     * @param {WebsiteRootFolder} wrf
+     * @param {Boolean} enabled
+     */
+    g._onAppEnabled = function (orf, wrf, enabled) {
+        {{#if jsondb}}
+        // Make sure we have a JsonDB and the index is correct
+        var db = g._getOrCreateUrlDb(orf);
+        g._setAllowAccess(db, true);
+        g._updateMappings(db);
+        {{/if}}
+    };
+
+    {{#if jsondb}}
+    g._getOrCreateUrlDb = function (page) {
+        var jsonDb = page.find('/jsondb');
+        var db = jsonDb.child(g._config.DB_NAME);
+
+        if (formatter.isNull(db)) {
+            db = jsonDb.createDb(g._config.DB_NAME, g._config.DB_TITLE, g._config.DB_NAME);
+
+            _updateMappings(db);
+
+            _setAllowAccess(db, true);
+        }
+
+        return db;
+    };
+
+    g._setAllowAccess = function (jsonDB, allowAccess) {
+        transactionManager.runInTransaction(function () {
+            jsonDB.setAllowAccess(allowAccess);
+        });
+    };
+
+    g._updateMappings = function (db) {
+        var b = formatter.newMapBuilder();
+
+        for (var i = 0; i < g.MAPPINGS.length; i++) {
+            var mapping = g.MAPPINGS[i];
+            b.field(mapping.type, JSON.stringify(mapping.schema));
+        }
+
+        db.updateTypeMappings(b);
+    };
+    {{/if}}
+
+    g._checkRedirect = function (page, params) {
+        var href = page.href;
+        if (!href.endsWith('/')) {
+            return views.redirectView(href + '/');
+        }
+    };
+})(this);

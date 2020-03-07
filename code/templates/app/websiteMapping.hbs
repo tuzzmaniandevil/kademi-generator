@@ -1,0 +1,9 @@
+(function (g) {
+    controllerMappings
+        .websiteController()
+        .enabled(true)
+        .isPublic(true)
+        .pathSegmentName('{{camelCase appName}}')
+        .defaultView(views.jsonResult(false, 'Unknown Method'))
+        .build();
+})(this);
