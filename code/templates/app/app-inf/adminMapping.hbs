@@ -1,0 +1,8 @@
+(function (g) {
+    controllerMappings
+        .adminController()
+        .enabled(true)
+        .pathSegmentName('{{appName}}')
+        .defaultView(views.templateView('/theme/apps/{{appName}}/{{appName}}Example.html'))
+        .build();
+})(this);

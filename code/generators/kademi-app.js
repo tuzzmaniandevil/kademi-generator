@@ -46,6 +46,12 @@ module.exports = plop => {
                 default: true
             },
             {
+                name: 'appSettings',
+                type: 'confirm',
+                message: 'Add App Settings:',
+                default: false
+            },
+            {
                 name: 'website',
                 type: 'confirm',
                 message: 'Can the app be installed in a website:',
@@ -85,8 +91,6 @@ module.exports = plop => {
             },
         ],
         actions: function (data) {
-            var actions = [];
-
             var basePath = `${CURR_DIR}/${data.appName}`;
 
             // Create base directory
@@ -95,6 +99,42 @@ module.exports = plop => {
             });
             fs.mkdirSync(`${basePath}/admin/theme/apps/${data.appName}`, { recursive: true });
             fs.mkdirSync(`${basePath}/common/theme/apps/${data.appName}`, { recursive: true });
+
+            var actions = [
+                // Add common
+                {
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/dependencies.json`,
+                    templateFile: 'templates/app/dependencies.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/controllers.xml`,
+                    templateFile: 'templates/app/app-inf/controller.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/config.js`,
+                    templateFile: 'templates/app/app-inf/config.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/common.js`,
+                    templateFile: 'templates/app/app-inf/common.hbs'
+                },
+                // Example Admin Template
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/admin/mappings.js`,
+                    templateFile: 'templates/app/app-inf/adminMapping.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/${data.appName}Example.html`,
+                    templateFile: 'templates/app/admin/adminExamplePage.hbs'
+                }
+            ];
+
 
             if (data.jsondb) {
                 actions.push({
@@ -125,7 +165,7 @@ module.exports = plop => {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/website/components.js`,
-                    templateFile: `templates/app/componentDef.hbs`
+                    templateFile: `templates/app/app-inf/componentDef.hbs`
                 });
             }
 
@@ -138,7 +178,7 @@ module.exports = plop => {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/common/xmlHttpRequest.js`,
-                    templateFile: 'templates/app/xmlHttpRequest.js'
+                    templateFile: 'templates/app/app-inf/xmlHttpRequest.js'
                 });
             }
 
@@ -149,40 +189,6 @@ module.exports = plop => {
                     template: '{{versionNum}}'
                 });
             }
-
-            // Add common
-            actions.push({
-                type: 'add',
-                path: `${basePath}/admin/theme/apps/${data.appName}/dependencies.json`,
-                templateFile: 'templates/app/dependencies.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/controllers.xml`,
-                templateFile: 'templates/app/controller.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/common/config.js`,
-                templateFile: 'templates/app/config.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/common/common.js`,
-                templateFile: 'templates/app/common.hbs'
-            });
-
-            // Example Admin Template
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/admin/mappings.js`,
-                templateFile: 'templates/app/adminMapping.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/admin/theme/apps/${data.appName}/${data.appName}Example.html`,
-                templateFile: 'templates/app/adminExamplePage.hbs'
-            });
 
             return actions;
         }

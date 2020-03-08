@@ -1,0 +1,6 @@
+<div class="form-group">
+    <label class="col-sm-4 control-label" for="exampleSetting">Example Setting</label>
+    <div class="col-sm-7">
+        <input type="checkbox" value="true" name="exampleSetting" $formatter.ifTrue($page.getAppSetting($app.instanceId, 'exampleSetting'), 'checked="checked"', '') />
+    </div>
+</div>

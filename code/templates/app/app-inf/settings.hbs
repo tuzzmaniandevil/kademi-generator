@@ -1,0 +1,29 @@
+(function (g) {
+    g._getSetting = function (settingName) {
+        var app = applications.get(g._config.APP_ID);
+
+        return app.getSetting(settingName);
+    };
+
+    g.SETTINGS = {
+        EXAMPLE_SETTING: 'exampleSetting'
+    };
+
+    g.DEFAULT_SETTINGS = {
+        EXAMPLE_SETTING: false
+    };
+
+    g.isExampleSetting = function () {
+        var settingVal = g._getSetting(g.SETTINGS.EXAMPLE_SETTING);
+
+        return formatter.toBool(settingVal, g.DEFAULT_SETTINGS.EXAMPLE_SETTING);
+    }
+
+    g._saveSettings = function (page, params, files, fc) {
+        var exampleSetting = formatter.cleanString(fc.booleanParam(g.SETTINGS.EXAMPLE_SETTING, false));
+
+        page.setAppSetting(g._config.APP_ID, g.SETTINGS.EXAMPLE_SETTING, exampleSetting);
+
+        return true;
+    };
+})(this);
