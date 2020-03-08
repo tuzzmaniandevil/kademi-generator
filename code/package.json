@@ -8,19 +8,26 @@
   "dependencies": {
     "plop": "^2.6.0"
   },
+  "contributors": [
+    {
+      "name": "Wesley Tuzza",
+      "email": "wesley@tuzza.co",
+      "url": "https://github.com/tuzzmaniandevil"
+    }
+  ],
   "bin": {
     "kademi-generator": "./index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tuzzmaniandevil/KademiAppTemplate.git"
+    "url": "git+https://github.com/tuzzmaniandevil/kademi-generator.git"
   },
   "keywords": [
     "kademi",
     "generator"
   ],
   "bugs": {
-    "url": "https://github.com/tuzzmaniandevil/KademiAppTemplate/issues"
+    "url": "https://github.com/tuzzmaniandevil/kademi-generator/issues"
   },
-  "homepage": "https://github.com/tuzzmaniandevil/KademiAppTemplate#readme"
+  "homepage": "https://github.com/tuzzmaniandevil/kademi-generator#readme"
 }
