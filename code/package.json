@@ -1,14 +1,26 @@
 {
-  "name": "generate-kademi",
+  "name": "kademi-generator",
   "version": "1.0.0",
-  "description": "A collection of generators for Kademi",
+  "description": "A collection of generators for Kademi apps",
   "main": "index.js",
   "author": "wesley@tuzza.co",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "plop": "^2.6.0"
   },
   "bin": {
-    "generate-kademi": "./index.js"
-  }
+    "kademi-generator": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuzzmaniandevil/KademiAppTemplate.git"
+  },
+  "keywords": [
+    "kademi",
+    "generator"
+  ],
+  "bugs": {
+    "url": "https://github.com/tuzzmaniandevil/KademiAppTemplate/issues"
+  },
+  "homepage": "https://github.com/tuzzmaniandevil/KademiAppTemplate#readme"
 }
