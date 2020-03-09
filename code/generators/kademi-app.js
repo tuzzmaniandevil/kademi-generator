@@ -41,12 +41,6 @@ module.exports = plop => {
                 default: true
             },
             {
-                name: 'appSettings',
-                type: 'confirm',
-                message: 'Add App Settings:',
-                default: false
-            },
-            {
                 name: 'website',
                 type: 'confirm',
                 message: 'Can the app be installed in a website:',
@@ -84,6 +78,66 @@ module.exports = plop => {
                 default: '1.0.0',
                 when: answers => answers.versionFile
             },
+            {
+                name: 'appSettings',
+                type: 'confirm',
+                message: 'Add App Settings:',
+                default: false
+            },
+            {
+                type: 'recursive',
+                name: 'settings',
+                message: 'Add a setting?',
+                when: answers => answers.appSettings,
+                prompts: [
+                    {
+                        type: 'input',
+                        name: 'name',
+                        message: 'Setting name:',
+                        validate: function (input) {
+                            if (/^([A-Za-z\-\_\d])+$/.test(input)) {
+                                return true;
+                            } else {
+                                return 'Setting name may only include letters, numbers and underscores.';
+                            }
+                        }
+                    },
+                    {
+                        type: 'input',
+                        name: 'title',
+                        message: 'Setting Title:'
+                    },
+                    {
+                        type: 'list',
+                        name: 'inputType',
+                        message: 'Input Type:',
+                        choices: [
+                            {
+                                name: 'Text',
+                                value: 'text'
+                            },
+                            {
+                                name: 'Text Area',
+                                value: 'textarea'
+                            },
+                            {
+                                name: 'Checkbox',
+                                value: 'checkbox'
+                            },
+                            {
+                                name: 'Select',
+                                value: 'select'
+                            }
+                        ]
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'required',
+                        message: 'Required:',
+                        default: false
+                    }
+                ]
+            }
         ],
         actions: function (data) {
             var basePath = `${CURR_DIR}/${data.appName}`;
@@ -187,6 +241,19 @@ module.exports = plop => {
                     type: 'add',
                     path: `${basePath}/version.txt`,
                     template: '{{versionNum}}'
+                });
+            }
+
+            if (data.appSettings) {
+                actions.push({
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/settings.html`,
+                    templateFile: 'templates/app/admin/settings.hbs'
+                });
+                actions.push({
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/settings.js`,
+                    templateFile: 'templates/app/app-inf/settings.hbs'
                 });
             }
 

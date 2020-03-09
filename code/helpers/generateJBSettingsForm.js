@@ -7,24 +7,23 @@ module.exports = (settings, forGoal) => {
         settings.forEach((setting, i, arr) => {
             const isFirst = i === 0;
             const isLast = i === (arr.length - 1)
-            console.log('Current', i, isFirst, isLast);
             let input = '';
             switch (setting.inputType) {
                 case 'text': {
-                    input = `<input type="text" class="form-control ${setting.name}" />`;
+                    input = `<input type="text" class="form-control ${setting.name}${setting.required ? ' required' : ''}" />`;
                     break;
                 }
                 case 'textarea': {
-                    input = `<textarea rows="4" class="form-control ${setting.name}"></textarea>`;
+                    input = `<textarea rows="4" class="form-control ${setting.name}${setting.required ? ' required' : ''}"></textarea>`;
                     break;
                 }
                 case 'checkbox': {
-                    input = `<input class="${setting.name}" type="checkbox" value="true"/>`;
+                    input = `<input class="${setting.name}${setting.required ? ' required' : ''}" type="checkbox" value="true"/>`;
                     break;
                 }
                 case 'select':
                 case 'website': {
-                    input = `<select class="form-control ${setting.name}"></select>`;
+                    input = `<select class="form-control ${setting.name}${setting.required ? ' required' : ''}"></select>`;
                     break;
                 }
                 default: {

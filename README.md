@@ -5,8 +5,7 @@ Create Kademi is a generator written in NodejS and based on [PLOP](https://plopj
 | Name           | Description                                                                                                             |
 |----------------|-------------------------------------------------------------------------------------------------------------------------|
 | kademi-app     | Generates a base Kademi app with options to add support for KJsonData, App Settings, XMLHttpRequest, Version File, etc. |
-| journey-action | TODO                                                                                                                    |
-| journey-goal   | TODO                                                                                                                    |
+| journey-node   | TODO                                                                                                                    |
 | component      | TODO                                                                                                                    |
 | admin-page     | TODO                                                                                                                    |
 

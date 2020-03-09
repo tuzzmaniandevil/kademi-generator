@@ -1,13 +1,14 @@
 const CURR_DIR = process.cwd();
 
 module.exports = plop => {
-    plop.setGenerator('journey', {
+    plop.setGenerator('journey-node', {
         description: 'Create a Journey Goal/Action',
         prompts: [
             {
                 name: 'dir',
-                type: 'directory',
-                basePath: CURR_DIR,
+                type: 'file-tree-selection',
+                root: CURR_DIR,
+                onlyShowDir: true,
                 message: 'Where you like to put this journey?'
             },
             {
@@ -97,6 +98,12 @@ module.exports = plop => {
                                 value: 'website'
                             }
                         ]
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'required',
+                        message: 'Required:',
+                        default: false
                     }
                 ]
             }
