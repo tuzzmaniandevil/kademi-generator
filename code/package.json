@@ -1,14 +1,37 @@
 {
-  "name": "generate-kademi",
+  "name": "kademi-generator",
   "version": "1.0.0",
-  "description": "A collection of generators for Kademi",
+  "description": "A collection of generators for Kademi apps",
   "main": "index.js",
   "author": "wesley@tuzza.co",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
+    "inquirer": "^7.0.6",
+    "inquirer-directory": "^2.2.0",
+    "inquirer-file-tree-selection-prompt": "^1.0.4",
+    "inquirer-recursive": "0.0.6",
     "plop": "^2.6.0"
   },
+  "contributors": [
+    {
+      "name": "Wesley Tuzza",
+      "email": "wesley@tuzza.co",
+      "url": "https://github.com/tuzzmaniandevil"
+    }
+  ],
   "bin": {
-    "generate-kademi": "./index.js"
-  }
+    "kademi-generator": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuzzmaniandevil/kademi-generator.git"
+  },
+  "keywords": [
+    "kademi",
+    "generator"
+  ],
+  "bugs": {
+    "url": "https://github.com/tuzzmaniandevil/kademi-generator/issues"
+  },
+  "homepage": "https://github.com/tuzzmaniandevil/kademi-generator#readme"
 }

@@ -1,0 +1,39 @@
+(function (g) {
+    g._getSetting = function (settingName) {
+        var app = applications.get(g._config.APP_ID);
+
+        return app.getSetting(settingName);
+    };
+
+    g.SETTINGS = {
+        {{#each settings}}
+        {{constantCase name}}: '{{name}}'{{#if @last}}{{else}},{{/if}}
+        {{/each}}
+    };
+
+    g.DEFAULT_SETTINGS = {
+        {{#each settings}}
+        {{#ifEquals inputType "checkbox"}}
+        {{constantCase ../name}}: false{{#if @last}}{{else}},{{/if}}
+        {{else}}
+        {{constantCase ../name}}: ''{{#if @last}}{{else}},{{/if}}
+        {{/ifEquals}}
+        {{/each}}
+    };
+
+    g._saveSettings = function (page, params, files, fc) {
+        {{#each settings}}
+        {{#ifEquals inputType "checkbox"}}
+        var {{../name}} = formatter.cleanString(fc.booleanParam(g.SETTINGS.{{constantCase ../name}}, g.DEFAULT_SETTINGS.{{constantCase ../name}}));
+        {{else}}
+        var {{../name}} = fc.cleanedParam(g.SETTINGS.{{constantCase ../name}}) || g.DEFAULT_SETTINGS.{{constantCase ../name}};
+        {{/ifEquals}}
+        {{/each}}
+
+        {{#each settings}}
+        page.setAppSetting(g._config.APP_ID, g.SETTINGS.{{constantCase name}}, {{name}});
+        {{/each}}
+
+        return true;
+    };
+})(this);

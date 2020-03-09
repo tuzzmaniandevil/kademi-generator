@@ -7,11 +7,6 @@ const BASE_DIRS = [
     'admin/theme/apps'
 ];
 
-const WEBSITE_DIRS = [
-    'APP-INF/website',
-    'website/theme/apps'
-];
-
 module.exports = plop => {
     plop.setGenerator('kademi-app', {
         description: 'Create a kademi app',
@@ -79,14 +74,72 @@ module.exports = plop => {
             {
                 name: 'versionNum',
                 type: 'input',
-                message: 'Will you be creating components:',
+                message: 'App Version:',
                 default: '1.0.0',
                 when: answers => answers.versionFile
             },
+            {
+                name: 'appSettings',
+                type: 'confirm',
+                message: 'Add App Settings:',
+                default: false
+            },
+            {
+                type: 'recursive',
+                name: 'settings',
+                message: 'Add a setting?',
+                when: answers => answers.appSettings,
+                prompts: [
+                    {
+                        type: 'input',
+                        name: 'name',
+                        message: 'Setting name:',
+                        validate: function (input) {
+                            if (/^([A-Za-z\-\_\d])+$/.test(input)) {
+                                return true;
+                            } else {
+                                return 'Setting name may only include letters, numbers and underscores.';
+                            }
+                        }
+                    },
+                    {
+                        type: 'input',
+                        name: 'title',
+                        message: 'Setting Title:'
+                    },
+                    {
+                        type: 'list',
+                        name: 'inputType',
+                        message: 'Input Type:',
+                        choices: [
+                            {
+                                name: 'Text',
+                                value: 'text'
+                            },
+                            {
+                                name: 'Text Area',
+                                value: 'textarea'
+                            },
+                            {
+                                name: 'Checkbox',
+                                value: 'checkbox'
+                            },
+                            {
+                                name: 'Select',
+                                value: 'select'
+                            }
+                        ]
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'required',
+                        message: 'Required:',
+                        default: false
+                    }
+                ]
+            }
         ],
         actions: function (data) {
-            var actions = [];
-
             var basePath = `${CURR_DIR}/${data.appName}`;
 
             // Create base directory
@@ -96,11 +149,52 @@ module.exports = plop => {
             fs.mkdirSync(`${basePath}/admin/theme/apps/${data.appName}`, { recursive: true });
             fs.mkdirSync(`${basePath}/common/theme/apps/${data.appName}`, { recursive: true });
 
+            var actions = [
+                // Add common
+                {
+                    type: 'add',
+                    path: `${basePath}/.gitignore`,
+                    templateFile: 'templates/app/gitignore.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/dependencies.json`,
+                    templateFile: 'templates/app/dependencies.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/controllers.xml`,
+                    templateFile: 'templates/app/app-inf/controller.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/config.js`,
+                    templateFile: 'templates/app/app-inf/config.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/common.js`,
+                    templateFile: 'templates/app/app-inf/common.hbs'
+                },
+                // Example Admin Template
+                {
+                    type: 'add',
+                    path: `${basePath}/APP-INF/admin/mappings.js`,
+                    templateFile: 'templates/app/app-inf/adminMapping.hbs'
+                },
+                {
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/${data.appName}Example.html`,
+                    templateFile: 'templates/app/admin/adminExamplePage.hbs'
+                }
+            ];
+
+
             if (data.jsondb) {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/common/esMappings.js`,
-                    templateFile: 'templates/app/esMappings.js'
+                    templateFile: 'templates/app/app-inf/esMappings.js'
                 });
             }
 
@@ -112,11 +206,11 @@ module.exports = plop => {
                     path: `${basePath}/website/theme/apps/${data.appName}/dependencies.json`,
                     templateFile: 'templates/app/dependencies.hbs'
                 });
-                actions.push({
-                    type: 'add',
-                    path: `${basePath}/APP-INF/website/mappings.js`,
-                    templateFile: 'templates/app/websiteMapping.hbs'
-                });
+                // actions.push({
+                //     type: 'add',
+                //     path: `${basePath}/APP-INF/website/mappings.js`,
+                //     templateFile: 'templates/app/websiteMapping.hbs'
+                // });
             }
 
             if (data.website && data.useComponents) {
@@ -125,7 +219,7 @@ module.exports = plop => {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/website/components.js`,
-                    templateFile: `templates/app/componentDef.hbs`
+                    templateFile: `templates/app/app-inf/componentDef.hbs`
                 });
             }
 
@@ -138,7 +232,7 @@ module.exports = plop => {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/common/xmlHttpRequest.js`,
-                    templateFile: 'templates/app/xmlHttpRequest.js'
+                    templateFile: 'templates/app/app-inf/xmlHttpRequest.js'
                 });
             }
 
@@ -150,39 +244,18 @@ module.exports = plop => {
                 });
             }
 
-            // Add common
-            actions.push({
-                type: 'add',
-                path: `${basePath}/admin/theme/apps/${data.appName}/dependencies.json`,
-                templateFile: 'templates/app/dependencies.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/controllers.xml`,
-                templateFile: 'templates/app/controller.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/common/config.js`,
-                templateFile: 'templates/app/config.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/common/common.js`,
-                templateFile: 'templates/app/common.hbs'
-            });
-
-            // Example Admin Template
-            actions.push({
-                type: 'add',
-                path: `${basePath}/APP-INF/admin/mappings.js`,
-                templateFile: 'templates/app/adminMapping.hbs'
-            });
-            actions.push({
-                type: 'add',
-                path: `${basePath}/admin/theme/apps/${data.appName}/${data.appName}Example.html`,
-                templateFile: 'templates/app/adminExamplePage.hbs'
-            });
+            if (data.appSettings) {
+                actions.push({
+                    type: 'add',
+                    path: `${basePath}/admin/theme/apps/${data.appName}/settings.html`,
+                    templateFile: 'templates/app/admin/settings.hbs'
+                });
+                actions.push({
+                    type: 'add',
+                    path: `${basePath}/APP-INF/common/settings.js`,
+                    templateFile: 'templates/app/app-inf/settings.hbs'
+                });
+            }
 
             return actions;
         }

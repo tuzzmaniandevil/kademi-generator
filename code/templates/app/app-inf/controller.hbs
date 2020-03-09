@@ -5,6 +5,9 @@
     <source>/APP-INF/common/esMappings.js</source>
     {{/if}}
     <source>/APP-INF/common/common.js</source>
+    {{#if appSettings}}
+    <source>/APP-INF/common/settings.js</source>
+    {{/if}}
     {{#if xhrPolyfill}}
     <source>/APP-INF/common/xmlHttpRequest.js</source>
     {{/if}}
@@ -16,4 +19,14 @@
     <!-- Website -->
     <source>/APP-INF/website/mappings.js</source>
     {{/if}}
+
+    {{#if appSettings}}
+    <!-- Settings -->
+    <settings enabled="true" path="/theme/apps/{{appName}}/settings.html">
+        <function>_saveSettings</function>
+    </settings>
+    {{/if}}
+
+    <!-- Menu -->
+    <menu parentId="menuRoot" id="menuManage{{appName}}" path="/{{appName}}/" text="{{sentenceCase appName}}" css="fa fa-quote-right" ordering="45" />
 </controllers>
