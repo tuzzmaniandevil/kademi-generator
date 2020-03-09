@@ -6,6 +6,9 @@
   "author": "wesley@tuzza.co",
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "inquirer-directory": "^2.2.0",
+    "inquirer-recursive": "0.0.6",
+    "inquirer": "7.0.6",
     "plop": "^2.6.0"
   },
   "contributors": [

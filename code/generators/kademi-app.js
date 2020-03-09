@@ -7,11 +7,6 @@ const BASE_DIRS = [
     'admin/theme/apps'
 ];
 
-const WEBSITE_DIRS = [
-    'APP-INF/website',
-    'website/theme/apps'
-];
-
 module.exports = plop => {
     plop.setGenerator('kademi-app', {
         description: 'Create a kademi app',
@@ -85,7 +80,7 @@ module.exports = plop => {
             {
                 name: 'versionNum',
                 type: 'input',
-                message: 'Will you be creating components:',
+                message: 'App Version:',
                 default: '1.0.0',
                 when: answers => answers.versionFile
             },
@@ -102,6 +97,11 @@ module.exports = plop => {
 
             var actions = [
                 // Add common
+                {
+                    type: 'add',
+                    path: `${basePath}/.gitignore`,
+                    templateFile: 'templates/app/gitignore.hbs'
+                },
                 {
                     type: 'add',
                     path: `${basePath}/admin/theme/apps/${data.appName}/dependencies.json`,
@@ -140,7 +140,7 @@ module.exports = plop => {
                 actions.push({
                     type: 'add',
                     path: `${basePath}/APP-INF/common/esMappings.js`,
-                    templateFile: 'templates/app/esMappings.js'
+                    templateFile: 'templates/app/app-inf/esMappings.js'
                 });
             }
 
@@ -152,11 +152,11 @@ module.exports = plop => {
                     path: `${basePath}/website/theme/apps/${data.appName}/dependencies.json`,
                     templateFile: 'templates/app/dependencies.hbs'
                 });
-                actions.push({
-                    type: 'add',
-                    path: `${basePath}/APP-INF/website/mappings.js`,
-                    templateFile: 'templates/app/websiteMapping.hbs'
-                });
+                // actions.push({
+                //     type: 'add',
+                //     path: `${basePath}/APP-INF/website/mappings.js`,
+                //     templateFile: 'templates/app/websiteMapping.hbs'
+                // });
             }
 
             if (data.website && data.useComponents) {

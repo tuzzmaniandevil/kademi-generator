@@ -1,0 +1,82 @@
+JBNodes['{{journeyName}}'] = {
+    icon: 'fa fa-quote-right',
+    title: '{{journeyTitle}}',
+    type: JB_NODE_TYPE.GOAL,
+    ports: {
+        timeoutNode: {
+            label: 'timeout',
+            title: 'When timeout',
+            maxConnections: 1
+        },
+        nextNodeId: {
+            label: 'then',
+            title: 'When completed',
+            maxConnections: 1
+        },
+        pastTimeNode: {
+            label: 'past time',
+            title: 'When entered while timeout has passed',
+            maxConnections: 1
+        }
+    },
+
+    nodeTypeClass: 'customGoal',
+    settingEnabled: {{useSettings}},
+    {{#if useSettings}}
+    initSettingForm: function (form) {
+        form.append(
+            {{generateJBSettingsForm settings true}}
+            JBApp.standardGoalSettingControls
+        );
+
+        JBApp.initStandardGoalSettingControls(form);
+
+        {{generateWebsiteSelect settings}}
+
+        form.forms({
+            allowPostForm: false,
+            onValid: function () {
+                {{#each settings}}
+                {{#ifEquals inputType "checkbox"}}
+                var {{../name}}Setting = form.find('.{{../name}}').is(':checked');
+                {{else}}
+                var {{../name}}Setting = form.find('.{{../name}}').val();
+                {{/ifEquals}}
+                {{/each}}
+
+                JBApp.currentSettingNode.customSettings = {};
+                {{#each settings}}
+                {{#ifEquals inputType "checkbox"}}
+                JBApp.currentSettingNode.customSettings.{{../name}}Setting = {{../name}}Setting || false;
+                {{else}}
+                JBApp.currentSettingNode.customSettings.{{../name}}Setting = {{../name}}Setting || null;
+                {{/ifEquals}}
+                {{/each}}
+
+                JBApp.saveStandardGoalSetting(form);
+
+                JBApp.saveFunnel('Funnel is saved');
+                JBApp.hideSettingPanel();
+            }
+        });
+    },
+
+    showSettingForm: function (form, node) {
+        JBApp.showStandardGoalSettingControls(form, node);
+
+        if (typeof node.customSettings !== 'object') {
+            node.customSettings = {};
+        }
+
+        {{#each settings}}
+        {{#ifEquals inputType "checkbox"}}
+        form.find('.{{../name}}').prop('checked', node.customSettings.{{../name}} == true);
+        {{else}}
+        form.find('.{{../name}}').val(node.customSettings.{{../name}} || '');
+        {{/ifEquals}}
+        {{/each}}
+
+        JBApp.showSettingPanel(node);
+    }
+    {{/if}}
+};

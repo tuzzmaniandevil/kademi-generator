@@ -1,0 +1,51 @@
+JBNodes['{{journeyName}}'] = {
+    icon: 'fa fa-check-square-o',
+    title: '{{journeyTitle}}',
+    type: JB_NODE_TYPE.ACTION,
+
+    ports: {
+        nextNodeId: {
+            label: 'then',
+            title: 'When completed',
+            maxConnections: 1
+        }
+    },
+
+    nodeTypeClass: 'customAction',
+    settingEnabled: {{useSettings}},
+    {{#if useSettings}}
+    initSettingForm: function (form) {
+        form.append(
+            '<div class="form-group">' +
+            '    <div class="col-md-12">' +
+            '        <label>Example Setting</label>' +
+            '        <input class="form-control exampleSetting" />' +
+            '    </div>' +
+            '</div>'
+        );
+
+        form.forms({
+            allowPostForm: false,
+            onValid: function () {
+                var exampleSetting = form.find('.exampleSetting').val();
+
+                JBApp.currentSettingNode.customSettings = {};
+                JBApp.currentSettingNode.customSettings.exampleSetting = exampleSetting || null;
+
+                JBApp.saveFunnel('Funnel is saved');
+                JBApp.hideSettingPanel();
+            }
+        });
+    },
+
+    showSettingForm: function (form, node) {
+        if (node.customSettings === null || typeof node.customSettings !== 'object') {
+            node.customSettings = {};
+        }
+
+        form.find('.exampleSetting').val(node.customSettings.exampleSetting !== null ? node.customSettings.exampleSetting : '');
+
+        JBApp.showSettingPanel(node);
+    }
+    {{/if}}
+};

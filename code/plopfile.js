@@ -1,9 +1,31 @@
+const chalk = require('chalk');
+
+// Prompts
+const inquirerDirectory = require('inquirer-directory')
+const inquirerRecursive = require('inquirer-recursive');
+
+// Handlebars Helpers
+const handlebarsGenerateJBSettingsForm = require('./helpers/generateJBSettingsForm');
+const handlebarsGenerateWebsiteSelect = require('./helpers/generateWebsiteSelect');
+const handlebarsIfEquals = require('./helpers/ifEquals');
+
+// Generators
 const kademiAppGenerator = require('./generators/kademi-app');
-const journeyActionGenerator = require('./generators/journey-action');
-const journeyGoalGenerator = require('./generators/journey-goal');
+const journeyGenerator = require('./generators/journey');
 
 module.exports = plop => {
+    plop.setWelcomeMessage(chalk.blueBright('[Kademi-Generator]') + ' - Please select a task');
+
+    // Inquirer Prompt Types
+    plop.setPrompt('directory', inquirerDirectory);
+    plop.setPrompt('recursive', inquirerRecursive);
+
+    // Handlebar Helpers
+    plop.setHelper('generateJBSettingsForm', handlebarsGenerateJBSettingsForm);
+    plop.setHelper('generateWebsiteSelect', handlebarsGenerateWebsiteSelect)
+    plop.setHelper('ifEquals', handlebarsIfEquals);
+
+    // Generators
     kademiAppGenerator(plop);
-    journeyActionGenerator(plop);
-    journeyGoalGenerator(plop);
+    journeyGenerator(plop);
 };
